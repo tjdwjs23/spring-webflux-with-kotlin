@@ -1,1 +1,1 @@
-rootProject.name = "webflux"
+rootProject.name = "webflux-api"

@@ -11,35 +11,31 @@ import reactor.core.publisher.Mono
 class ItemService(private val itemRepository: ItemRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
-    fun create(item: Item): Mono<Item> = itemRepository.save(item).also {
-        logger.debug("Processed create(${item}).")
-    }
+    suspend fun create(item: Item): Mono<Item> =
+        itemRepository.save(item)
+            .also { logger.debug("Processed create(${item}).") }
 
-    fun update(id: Long, item: Item): Mono<Item> = findById(id)
-        .flatMap {
-            it.name = item.name
-            itemRepository.save(it)
-        }.also {
-            logger.debug("Processed update($id, ${item}).")
-        }
+    suspend fun update(id: Long, item: Item): Mono<Item> =
+        findById(id)
+            .flatMap {
+                it.name = item.name
+                itemRepository.save(it)
+            }
+            .also { logger.debug("Processed update($id, ${item}).") }
 
-    fun delete(id: Long) = findById(id)
-        .flatMap {
-            itemRepository.deleteById(it.id!!)
-        }.also {
-            logger.debug("Processed delete($id).")
-        }
+    suspend fun delete(id: Long) =
+        findById(id)
+            .flatMap { itemRepository.deleteById(it.id!!) }
+            .also { logger.debug("Processed delete($id).") }
 
-    suspend fun findAll(): Flux<Item> = itemRepository.findAll()
-        .doOnEach {
-            logger.debug("Processed findAll().")
-        }
+    suspend fun findAll(): Flux<Item> =
+        itemRepository.findAll()
+            .doOnEach { logger.debug("Processed findAll().") }
 
-    fun findById(id: Long): Mono<Item> = itemRepository.findById(id)
-        .also {
-            logger.debug("Processed findById($id).")
-        }
-        .switchIfEmpty(
-            Mono.error(ItemNotFoundException(ErrorCode.ITEM_NOT_FOUND))
-        )
+    suspend fun findById(id: Long): Mono<Item> =
+        itemRepository.findById(id)
+            .also { logger.debug("Processed findById($id).") }
+            .switchIfEmpty(
+                Mono.error(ItemNotFoundException(ErrorCode.ITEM_NOT_FOUND))
+            )
 }

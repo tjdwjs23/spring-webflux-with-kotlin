@@ -13,7 +13,6 @@ This project also uses a PostgreSQL R2DBC Driver to support Reactive connection 
     * Spring Boot
     * Spring Webflux
     * PostgreSQL R2DBC
-    * Flyway Migration
     * Docker Compose
     * Gradle
 * Database:
@@ -49,18 +48,6 @@ With your database already prepared you just use the command below to Run the pr
 
 OBS: You can also use your IDE to run the Project.
 
-## Using Flyway
-
-Flyway will create and populate the database when the application starts.
-
-If for some reason you need to perform a manual migration, use the command:
-
-```console
-    gradle flywayMigrate
-```
-
-OBS: You can also use your IDE to run Gradle tasks.
-
 ## Using Docker Compose
 
 In Tab "Terminal" access the folder `docker` and type `docker-compose up -d {{service_name}}`.
@@ -75,12 +62,3 @@ Useful Commands:
 
 Service names available for this project:
 * `postgres` (Database)
-
-## Postman
-
-To use this api you can install Postman and import the collection available on `webflux-api/postman` folder.
-
-To import the collection on Postman:
-1. Select the Menu `File > Import`
-2. Click on `Upload Files` button (`File` tab)
-3. Select `webflux-api/postman/webflux-api.postman_collection.json` file to import. 

@@ -18,21 +18,32 @@ repositories {
 }
 
 dependencies {
+    // Spring WebFlux
     implementation("org.springframework.boot:spring-boot-starter-actuator")
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    implementation("javax.validation:validation-api:2.0.1.Final")
+
+    // Spring Data R2DBC
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("io.r2dbc:r2dbc-postgresql")
     implementation("org.springframework.data:spring-data-r2dbc")
-    implementation("org.flywaydb:flyway-core:7.7.2")
+    runtimeOnly("org.postgresql:postgresql")
+
+    // Kotlin
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.9.8")
-    implementation("javax.validation:validation-api:2.0.1.Final")
-    runtimeOnly("org.postgresql:postgresql")
+
+    // Thymeleaf
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+    implementation("org.webjars:bootstrap:5.1.3")
+
+    // Testing
     testImplementation("junit:junit")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")

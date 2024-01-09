@@ -59,11 +59,3 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
     useJUnit()
 }
-
-flyway {
-    url = "jdbc:postgresql://localhost:5432/postgres"
-    user = "ITEM_USER"
-    password = "ITEM_PASS\$"
-    baselineOnMigrate = true
-    locations = arrayOf("filesystem:src/main/resources/db/migration")
-}

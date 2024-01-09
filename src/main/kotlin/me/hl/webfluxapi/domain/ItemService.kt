@@ -30,8 +30,8 @@ class ItemService(private val itemRepository: ItemRepository) {
             logger.debug("Processed delete($id).")
         }
 
-    fun findAll(): Flux<Item> = itemRepository.findAll()
-        .also {
+    suspend fun findAll(): Flux<Item> = itemRepository.findAll()
+        .doOnEach {
             logger.debug("Processed findAll().")
         }
 

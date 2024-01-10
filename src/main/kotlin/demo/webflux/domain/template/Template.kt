@@ -13,6 +13,8 @@ data class Template(
     var title: String,
     var content: String,
     var author: String,
+    @Column("FILE_NAME")
+    var fileName: String? = null,
     var create_date: LocalDate? = LocalDate.now(),
     var modified_date: LocalDate? = null
 )

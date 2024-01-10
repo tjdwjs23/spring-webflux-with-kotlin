@@ -2,4 +2,4 @@ package me.hl.webfluxapi.domain
 
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 
-interface ItemRepository : ReactiveCrudRepository<Item, Long>
+interface TemplateRepository : ReactiveCrudRepository<Template, Long>

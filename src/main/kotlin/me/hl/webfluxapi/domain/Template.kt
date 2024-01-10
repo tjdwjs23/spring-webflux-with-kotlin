@@ -1,0 +1,18 @@
+package me.hl.webfluxapi.domain
+
+import org.springframework.data.annotation.Id
+import org.springframework.data.relational.core.mapping.Column
+import org.springframework.data.relational.core.mapping.Table
+import java.time.LocalDate
+
+@Table("TEMPLATE_TABLE")
+data class Template(
+    @Id
+    @Column("ID")
+    val id: Long?,
+    var title: String,
+    var content: String,
+    var author: String,
+    var create_date: LocalDate? = LocalDate.now(),
+    var modified_date: LocalDate? = null
+)

@@ -1,9 +1,6 @@
-insert into item (txt_name)
-values  ('Item 1'),
-        ('Item 2'),
-        ('Item 3'),
-        ('Item 4'),
-        ('Item 5'),
-        ('Item 6'),
-        ('Item 7'),
-        ('Item 8');
+INSERT INTO public.template_table
+(title, "content", author, create_date)
+VALUES
+    ('Hobby', 'Tennis', 'Choi', CURRENT_DATE),
+    ('Travel', 'Exploring new places', 'Smith', CURRENT_DATE),
+    ('Cooking', 'Trying new recipes', 'Kim', CURRENT_DATE);

@@ -1,4 +1,4 @@
-package me.hl.webfluxapi.domain
+package demo.webflux.domain.template
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Column

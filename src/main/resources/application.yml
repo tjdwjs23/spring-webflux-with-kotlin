@@ -18,6 +18,5 @@ spring:
 
 logging:
   level:
-    me:
-      hl:
-        webfluxapi: DEBUG
+    demo:
+      webflux: DEBUG

@@ -1,7 +1,7 @@
-package me.hl.webfluxapi.rest
+package demo.webflux.rest
 
+import demo.webflux.domain.template.TemplateService
 import kotlinx.coroutines.reactive.awaitFirstOrNull
-import me.hl.webfluxapi.domain.TemplateService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping

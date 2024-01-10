@@ -1,4 +1,4 @@
-package me.hl.webfluxapi
+package demo.webflux
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration

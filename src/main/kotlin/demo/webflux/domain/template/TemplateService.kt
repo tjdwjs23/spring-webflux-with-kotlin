@@ -1,7 +1,7 @@
-package me.hl.webfluxapi.domain
+package demo.webflux.domain.template
 
-import me.hl.webfluxapi.exception.ErrorCode
-import me.hl.webfluxapi.exception.ItemNotFoundException
+import demo.webflux.exception.ErrorCode
+import demo.webflux.exception.ItemNotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux

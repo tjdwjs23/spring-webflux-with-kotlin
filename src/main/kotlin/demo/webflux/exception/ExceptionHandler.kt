@@ -1,4 +1,4 @@
-package me.hl.webfluxapi.exception
+package demo.webflux.exception
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper

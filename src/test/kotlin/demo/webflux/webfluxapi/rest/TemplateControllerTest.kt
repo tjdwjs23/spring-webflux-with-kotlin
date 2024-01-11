@@ -1,16 +1,16 @@
-package me.hl.webfluxapi.rest
+package demo.webflux.webfluxapi.rest
 
-import me.hl.webfluxapi.Commons.Companion.ITEM_DEFAULT_ID
-import me.hl.webfluxapi.buildAlternativeItemRequest
-import me.hl.webfluxapi.buildItem
-import me.hl.webfluxapi.buildItemRequest
-import me.hl.webfluxapi.buildModifiedItem
-import me.hl.webfluxapi.buildNotFoundResponse
-import me.hl.webfluxapi.domain.Item
-import me.hl.webfluxapi.exception.ErrorCode
-import me.hl.webfluxapi.exception.ErrorResponse
-import me.hl.webfluxapi.exception.ItemNotFoundException
-import me.hl.webfluxapi.domain.ItemService
+import demo.webflux.webfluxapi.Commons.Companion.ITEM_DEFAULT_ID
+import demo.webflux.webfluxapi.buildAlternativeItemRequest
+import demo.webflux.webfluxapi.buildItem
+import demo.webflux.webfluxapi.buildItemRequest
+import demo.webflux.webfluxapi.buildModifiedItem
+import demo.webflux.webfluxapi.buildNotFoundResponse
+import demo.webflux.domain.template.Template
+import demo.webflux.exception.ErrorCode
+import demo.webflux.exception.ErrorResponse
+import demo.webflux.exception.ItemNotFoundException
+import demo.webflux.domain.template.TemplateService
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.BDDMockito.given
@@ -28,9 +28,9 @@ import reactor.core.publisher.Mono
 
 @RunWith(SpringRunner::class)
 @WebFluxTest
-class ItemControllerTest {
+class TemplateControllerTest {
     @MockBean
-    private lateinit var itemService: ItemService
+    private lateinit var itemService: TemplateService
 
     @Autowired
     private lateinit var webTestClient: WebTestClient
@@ -48,7 +48,7 @@ class ItemControllerTest {
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk
-            .expectBody<Item>()
+            .expectBody<Template>()
             .isEqualTo(item)
     }
 
@@ -62,7 +62,7 @@ class ItemControllerTest {
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk
-            .expectBody<List<Item>>()
+            .expectBody<List<Template>>()
             .isEqualTo(listOf(item))
     }
 
@@ -75,7 +75,7 @@ class ItemControllerTest {
             .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk
-            .expectBody<List<Item>>()
+            .expectBody<List<Template>>()
             .isEqualTo(listOf())
     }
 
@@ -103,7 +103,7 @@ class ItemControllerTest {
             .body(BodyInserters.fromValue(itemRequest))
             .exchange()
             .expectStatus().isCreated
-            .expectBody<Item>()
+            .expectBody<Template>()
             .isEqualTo(item)
     }
 
@@ -118,7 +118,7 @@ class ItemControllerTest {
             .body(BodyInserters.fromValue(itemRequest))
             .exchange()
             .expectStatus().isOk
-            .expectBody<Item>()
+            .expectBody<Template>()
             .isEqualTo(item)
     }
 

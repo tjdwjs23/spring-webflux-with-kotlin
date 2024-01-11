@@ -1,15 +1,15 @@
-package me.hl.webfluxapi.service
+package demo.webflux.webfluxapi.service
 
-import me.hl.webfluxapi.Commons.Companion.ITEM_DEFAULT_ID
-import me.hl.webfluxapi.buildAlternativeItemRequest
-import me.hl.webfluxapi.buildItem
-import me.hl.webfluxapi.buildItemRequest
-import me.hl.webfluxapi.buildModifiedItem
-import me.hl.webfluxapi.exception.ErrorCode
-import me.hl.webfluxapi.exception.ItemNotFoundException
-import me.hl.webfluxapi.domain.ItemRepository
-import me.hl.webfluxapi.domain.ItemService
-import me.hl.webfluxapi.rest.toDomain
+import demo.webflux.webfluxapi.Commons.Companion.ITEM_DEFAULT_ID
+import demo.webflux.webfluxapi.buildAlternativeItemRequest
+import demo.webflux.webfluxapi.buildItem
+import demo.webflux.webfluxapi.buildItemRequest
+import demo.webflux.webfluxapi.buildModifiedItem
+import demo.webflux.exception.ErrorCode
+import demo.webflux.exception.ItemNotFoundException
+import demo.webflux.domain.template.TemplateRepository
+import demo.webflux.domain.template.TemplateService
+import demo.webflux.webfluxapi.rest.toDomain
 import org.junit.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito
@@ -19,10 +19,10 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 
 @WebFluxTest
-class ItemServiceTest {
+class TemplateServiceTest {
 
-    private val itemRepository = Mockito.mock(ItemRepository::class.java)
-    private val itemService = ItemService(itemRepository)
+    private val itemRepository = Mockito.mock(TemplateRepository::class.java)
+    private val itemService = TemplateService(itemRepository)
 
     @Test
     fun `Should return Item When Item exists`() {

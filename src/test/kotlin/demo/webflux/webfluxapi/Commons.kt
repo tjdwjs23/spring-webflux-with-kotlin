@@ -1,18 +1,18 @@
-package me.hl.webfluxapi
+package demo.webflux.webfluxapi
 
-import me.hl.webfluxapi.Commons.Companion.ITEM_ALTERNATIVE_ID
-import me.hl.webfluxapi.Commons.Companion.ITEM_DEFAULT_ID
-import me.hl.webfluxapi.domain.Item
-import me.hl.webfluxapi.exception.Error
-import me.hl.webfluxapi.exception.ErrorCode
-import me.hl.webfluxapi.exception.ErrorResponse
-import me.hl.webfluxapi.rest.ItemRequest
+import demo.webflux.webfluxapi.Commons.Companion.ITEM_ALTERNATIVE_ID
+import demo.webflux.webfluxapi.Commons.Companion.ITEM_DEFAULT_ID
+import demo.webflux.domain.template.Template
+import demo.webflux.exception.Error
+import demo.webflux.exception.ErrorCode
+import demo.webflux.exception.ErrorResponse
+import demo.webflux.webfluxapi.rest.ItemRequest
 import org.springframework.context.MessageSource
 import java.util.Locale
 
-fun buildItem() = Item(ITEM_DEFAULT_ID, "Item $ITEM_DEFAULT_ID")
+fun buildItem() = Template(ITEM_DEFAULT_ID, "Item $ITEM_DEFAULT_ID")
 fun buildItemRequest() = ItemRequest("Item $ITEM_DEFAULT_ID")
-fun buildModifiedItem() = Item(ITEM_DEFAULT_ID, "Item $ITEM_ALTERNATIVE_ID")
+fun buildModifiedItem() = Template(ITEM_DEFAULT_ID, "Item $ITEM_ALTERNATIVE_ID")
 fun buildAlternativeItemRequest() = ItemRequest("Item $ITEM_ALTERNATIVE_ID")
 fun buildNotFoundResponse(messageSource:MessageSource) = ErrorResponse(listOf(
     Error(code = ErrorCode.ITEM_NOT_FOUND, message = messageSource.getMessage(

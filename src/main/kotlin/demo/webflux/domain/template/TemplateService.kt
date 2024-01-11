@@ -2,6 +2,7 @@ package demo.webflux.domain.template
 
 import demo.webflux.exception.ErrorCode
 import demo.webflux.exception.ItemNotFoundException
+import kotlinx.coroutines.reactive.awaitFirst
 import org.slf4j.LoggerFactory
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.stereotype.Service
@@ -46,40 +47,15 @@ class TemplateService(private val templateRepository: TemplateRepository) {
             .switchIfEmpty(
                 Mono.error(ItemNotFoundException(ErrorCode.ITEM_NOT_FOUND))
             )
-
-    suspend fun save(template: Template, filePart: FilePart?): Mono<Template> {
-        val savedTemplateMono = templateRepository.save(template)
-
-        return savedTemplateMono.flatMap { savedTemplate ->
-            // Handle file upload if FilePart is provided
-            filePart?.let {
-                val fileName = "uploaded_file_${System.currentTimeMillis()}_${it.filename()}"
-                val uploadPath: Path = Paths.get("src/main/resources/static/assets/metadata")
-
-                // Save the file to the specified path
-                try {
-                    it.transferTo(uploadPath.resolve(fileName).toFile())
-                    logger.info("File saved successfully: $fileName")
-                } catch (e: Exception) {
-                    logger.error("Error saving file: ${e.message}", e)
-                    return@flatMap Mono.error<Template>(e)
-                }
-
-                // Update the template entity with the file name
-                savedTemplate.fileName = fileName
+    suspend fun save(template: Template): Template =
+        templateRepository.save(template)
+            .doOnSuccess { savedTemplate ->
+                logger.debug("Processed save($savedTemplate).")
             }
-
-            // Update the template entity in the database
-            try {
-                templateRepository.save(savedTemplate)
-                logger.info("Template saved successfully: $savedTemplate")
-                Mono.just(savedTemplate)
-            } catch (e: Exception) {
-                logger.error("Error saving template: ${e.message}", e)
-                Mono.error(e)
+            .doOnError { error ->
+                logger.error("Error during save(): ${error.message}")
             }
-        }
-    }
+            .awaitFirst()
 
 
 

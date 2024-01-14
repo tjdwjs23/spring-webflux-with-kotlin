@@ -2,12 +2,6 @@ server:
   port: ${PORT:8080}
 
 spring:
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    mode: HTML
-    encoding: UTF-8
-    cache: false
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/postgres
     username: ITEM_USER
@@ -15,9 +9,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-
-upload:
-  dir : src/main/resources/static/assets/metadata
 
 logging:
   level:

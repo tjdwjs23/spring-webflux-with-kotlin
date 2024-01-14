@@ -2,71 +2,55 @@ package demo.webflux.rest
 
 import demo.webflux.domain.template.Template
 import demo.webflux.domain.template.TemplateService
+import demo.webflux.exception.ItemNotFoundException
+import kotlinx.coroutines.reactive.awaitFirst
 import kotlinx.coroutines.reactive.awaitFirstOrNull
-import kotlinx.coroutines.reactive.awaitSingle
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.codec.multipart.FilePart
-import org.springframework.stereotype.Controller
-import org.springframework.ui.Model
-import org.springframework.core.io.buffer.DataBufferUtils
+import org.slf4j.LoggerFactory
 import org.springframework.web.bind.annotation.*
-import reactor.core.publisher.Mono
-import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestPart
-import org.springframework.web.bind.annotation.ResponseBody
-import org.springframework.web.server.ResponseStatusException
-import org.springframework.web.server.ServerWebExchange
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.StandardOpenOption
-import java.time.LocalDate
+import reactor.core.publisher.Flux
 
-@Controller
-class WebController(private val templateService: TemplateService) {
+@RestController
+@RequestMapping("template")
+class TemplateController(private val templateService: TemplateService) {
 
-    @GetMapping("/")
-    suspend fun showIndexPage(model: Model): String {
-        val templates = templateService.findAll().collectList().awaitFirstOrNull() ?: emptyList()
-        model.addAttribute("templates", templates)
-        return "index"
+    @PostMapping
+    suspend fun saveTemplate(@RequestBody template: Template): ResponseEntity<Template> {
+        val savedTemplate = templateService.save(template)
+        return ResponseEntity.ok(savedTemplate)
     }
 
-    @GetMapping("/posts/save")
-    suspend fun postsSavePage(model: Model): String {
-        return "posts-save"
+    @PutMapping("/{id}")
+    suspend fun updateTemplate(
+        @PathVariable id: Long,
+        @RequestBody template: Template
+    ): ResponseEntity<Template> {
+        val updatedTemplate = templateService.update(id, template).awaitFirst()
+        return ResponseEntity.ok(updatedTemplate)
     }
 
-    @Value("\${upload.dir}") // You can define the upload directory in application.properties
-    private lateinit var uploadDir: String
-
-    @PostMapping("/upload/file/single")
-    @ResponseBody
-    suspend fun handleFileUpload(
-        @ModelAttribute template: Template,
-        @RequestPart("fileToUpload") filePart: FilePart
-    ): ResponseEntity<String> {
-
-        val fileName = "uploaded_file_${System.currentTimeMillis()}_${filePart.filename()}"
-        val filePath: Path = Paths.get(uploadDir, fileName)
-
+    @DeleteMapping("/{id}")
+    suspend fun deleteTemplate(@PathVariable id: Long): ResponseEntity<Any> {
         try {
-            filePart.transferTo(filePath.toFile()).awaitFirstOrNull() // 비동기로 파일 저장
-
-            // Template 엔티티에 파일 정보 추가
-            template.fileName = fileName
-            template.create_date = LocalDate.now()
-
-            // 데이터베이스에 저장
-            templateService.save(template)
-
-            return ResponseEntity.status(HttpStatus.SEE_OTHER).header("Location", "/").body("File uploaded successfully")
+            templateService.delete(id).awaitFirstOrNull()
+            return ResponseEntity.ok().body("Template deleted successfully.")
+        } catch (e: ItemNotFoundException) {
+            return ResponseEntity.status(404).body("Template not found.")
         } catch (e: Exception) {
-            // Handle errors, if any, during file processing
-            println("Error uploading file: ${e.message}")
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file: ${e.message}")
+            return ResponseEntity.status(500).body("Error deleting template: ${e.message}")
         }
+    }
+
+    @GetMapping("/{id}")
+    suspend fun getTemplate(@PathVariable id: Long): ResponseEntity<Template> {
+        val template = templateService.findById(id).awaitFirst()
+        return ResponseEntity.ok(template)
+    }
+
+    @GetMapping("/list")
+    suspend fun listTemplates(): ResponseEntity<Flux<Template>> {
+        val templates = templateService.findAll()
+        return ResponseEntity.ok(templates)
     }
 }

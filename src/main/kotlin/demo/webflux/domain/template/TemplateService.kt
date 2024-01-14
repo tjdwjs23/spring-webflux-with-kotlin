@@ -13,41 +13,48 @@ class TemplateService(private val templateRepository: TemplateRepository) {
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     suspend fun save(template: Template): Template =
-        templateRepository.save(template)
-            .doOnSuccess { savedTemplate ->
-                logger.debug("Processed save($savedTemplate).")
-            }
-            .doOnError { error ->
-                logger.error("Error during save(): ${error.message}")
-            }
-            .awaitFirst()
+        try {
+            templateRepository.save(template).awaitFirst()
+        } catch (e: Exception) {
+            logger.error("Error during save(): ${e.message}", e)
+            throw e
+        }
 
     suspend fun update(id: Long, template: Template): Mono<Template> =
         findById(id)
             .flatMap {
-                it.title = template.title
-                templateRepository.save(it)
+                val updatedTemplate = it.copy(
+                    title = template.title,
+                    content = template.content,
+                    author = template.author,
+                )
+                templateRepository.save(updatedTemplate)
             }
-            .also { logger.debug("Processed update($id, ${template}).") }
+            .onErrorMap { error ->
+                logger.error("Error during update($id, $template): ${error.message}", error)
+                error
+            }
 
     suspend fun delete(id: Long): Mono<Void> =
         findById(id)
             .flatMap { templateRepository.deleteById(it.id!!).then() }
-            .also { logger.debug("Processed delete($id).") }
+            .onErrorMap { error ->
+                logger.error("Error during delete($id): ${error.message}", error)
+                error
+            }
 
     suspend fun findAll(): Flux<Template> =
         templateRepository.findAll()
-            .doOnEach { logger.debug("Processed findAll().") }
-            .onErrorResume { error ->
-                logger.error("Error during findAll(): ${error.message}")
-                Flux.error(error)
+            .onErrorMap { error ->
+                logger.error("Error during findAll(): ${error.message}", error)
+                error
             }
 
     suspend fun findById(id: Long): Mono<Template> =
         templateRepository.findById(id)
-            .also { logger.debug("Processed findById($id).") }
-            .switchIfEmpty(
-                Mono.error(ItemNotFoundException(ErrorCode.ITEM_NOT_FOUND))
-            )
+            .switchIfEmpty(Mono.error(ItemNotFoundException(ErrorCode.ITEM_NOT_FOUND)))
+            .onErrorMap { error ->
+                logger.error("Error during findById($id): ${error.message}", error)
+                error
+            }
 }
-

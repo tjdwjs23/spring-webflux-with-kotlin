@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import java.time.LocalDate
 
 @Service
 class TemplateService(private val templateRepository: TemplateRepository) {
@@ -27,6 +28,7 @@ class TemplateService(private val templateRepository: TemplateRepository) {
                     title = template.title,
                     content = template.content,
                     author = template.author,
+                    modified_date = LocalDate.now()
                 )
                 templateRepository.save(updatedTemplate)
             }

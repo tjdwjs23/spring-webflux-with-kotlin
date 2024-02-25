@@ -4,8 +4,8 @@ server:
 spring:
   r2dbc:
     url: r2dbc:postgresql://localhost:5432/postgres
-    username: ITEM_USER
-    password: ITEM_PASS
+    username: postgres
+    password: postgres
   jpa:
     hibernate:
       ddl-auto: update

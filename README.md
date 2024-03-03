@@ -9,7 +9,7 @@ This project also uses a PostgreSQL R2DBC Driver to support Reactive connection 
 ### Technical Info
 
 * Technologies:
-    * Kotlin
+    * Kotlin (Coroutine)
     * Spring Boot
     * Spring Webflux
     * PostgreSQL R2DBC
